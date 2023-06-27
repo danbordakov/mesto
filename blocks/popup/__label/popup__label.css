@@ -1,0 +1,13 @@
+.popup__label {
+  color: #000;
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 54px;
+}
+
+@media screen and (max-width: 880px) {
+  .popup__label {
+    font-size: 18px;
+    margin-bottom: 75px;
+  }
+}

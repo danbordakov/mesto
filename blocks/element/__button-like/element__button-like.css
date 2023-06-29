@@ -12,6 +12,6 @@
 }
 
 .element__button-like:hover {
-  opacity: 0.6;
+  background-image: url("../../../images/like-button-hover.svg");
   cursor: pointer;
 }

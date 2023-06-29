@@ -15,44 +15,42 @@
   <main>
     <section class="profile" aria-label="Профиль">
       <img src="./images/profile_avatar.jpg" alt="фотография профиля" class="profile__avatar">
-      <div class="profile-info">
-        <h1 class="profile-info__name">Жак-Ив Кусто</h1>
-        <button class="profile-info__edit-button"></button>
-        <p class="profile-info__description">Исследователь океана</p>
-      </div>
-      <button class="profile__add-button"></button>
+      <h1 class="profile__name">Жак-Ив Кусто</h1>
+      <p class="profile__description">Исследователь океана</p>
+      <button type="button" class="profile__edit-button"></button>
+      <button type="button" class="profile__add-button"></button>
     </section>
     <section aria-label="Элементы">
       <ul class="elements">
         <li class="element">
           <img src="./images/gallery/capenelsonAU.jpg" alt="Скалистый обрыв Кейп Нельсон" class="element__image">
-          <p class="element__description">Кейп Нельсон</p>
-          <button class="element__button-like"></button>
+          <h2 class="element__description">Кейп Нельсон</h2>
+          <button type="button" class="element__button-like"></button>
         </li>
         <li class="element">
           <img src="./images/gallery/dombay.png" alt="Горы и лесной массив Домбая" class="element__image">
-          <p class="element__description">Домбай</p>
-          <button class="element__button-like"></button>
+          <h2 class="element__description">Домбай</h2>
+          <button type="button" class="element__button-like"></button>
         </li>
         <li class="element">
           <img src="./images/gallery/elbrus.png" alt="Пустыня с видом верхушки Эльбруса вдалеке" class="element__image">
-          <p class="element__description">Эльбрус</p>
-          <button class="element__button-like"></button>
+          <h2 class="element__description">Эльбрус</h2>
+          <button type="button" class="element__button-like"></button>
         </li>
         <li class="element">
           <img src="./images/gallery/karachayevsk.jpg" alt="Храм в Карачаево-Черкессии" class="element__image">
-          <p class="element__description">Карачаево-Черкессия</p>
-          <button class="element__button-like"></button>
+          <h2 class="element__description">Карачаево-Черкессия</h2>
+          <button type="button" class="element__button-like"></button>
         </li>
         <li class="element">
           <img src="./images/gallery/kolchukUS.jpg" alt="озеро Колчак на фоне гор" class="element__image">
-          <p class="element__description">Колчак</p>
-          <button class="element__button-like"></button>
+          <h2 class="element__description">Колчак</h2>
+          <button type="button" class="element__button-like"></button>
         </li>
         <li class="element">
           <img src="./images/gallery/swithzerland.jpg" alt="Заснеженные горы Швейцарских альп" class="element__image">
-          <p class="element__description">Горы Швейцарии</p>
-          <button class="element__button-like"></button>
+          <h2 class="element__description">Горы Швейцарии</h2>
+          <button type="button" class="element__button-like"></button>
         </li>
       </ul>
     </section>
@@ -62,12 +60,12 @@
   </footer>
   <div class="popup">
     <div class="popup__container">
-      <button class="popup__button-close"></button>
-      <form class="popup__form">
-        <label class="popup__label">Редактировать профиль</label>
-        <input type="text" class="popup__field popup__field_name" name="name" placeholder="Жак-Ив Кусто">
-        <input type="text" class="popup__field popup__field_job" name="job" placeholder="Исследователь океана">
-        <input type="submit" value="Сохранить" class="popup__button-submit">
+      <button type="button" class="popup__button-close"></button>
+      <h2 class="popup__label">Редактировать профиль</h2>
+      <form name="form" class="popup__form">
+        <input type="text" class="popup__field popup__field_type_name" name="name">
+        <input type="text" class="popup__field popup__field_type_job" name="job">
+        <button type="submit" class="popup__button-submit">Сохранить</button>
       </form>
     </div>
   </div>

@@ -1,37 +1,33 @@
-const editButton = document.querySelector(".profile-info__edit-button");
-const popup = document.querySelector(".popup");
-const closeButton = popup.querySelector(".popup__button-close");
-const submitButton = popup.querySelector(".popup__button-submit");
+const editButton = document.querySelector('.profile__edit-button');
+const popup = document.querySelector('.popup');
+const closeButton = popup.querySelector('.popup__button-close');
+const submitButton = popup.querySelector('.popup__button-submit');
 
-function togglePopup(event) {
-  event.preventDefault();
-  popup.classList.toggle("popup_opened");
-  nameInput.value = '';
-  jobInput.value = '';
+let formElement = popup.querySelector('.popup__form');
+let nameInput = formElement.querySelector('.popup__field_type_name');
+let jobInput = formElement.querySelector('.popup__field_type_job');
+
+const nameMain = document.querySelector('.profile__name');
+const jobMain = document.querySelector('.profile__description');
+
+function openPopup() {
+  popup.classList.add('popup_opened');
+  nameInput.value = nameMain.textContent;
+  jobInput.value = jobMain.textContent;
 }
 
-editButton.addEventListener("click", togglePopup);
-closeButton.addEventListener("click", togglePopup);
-
-let formElement = popup.querySelector(".popup__form");
-let nameInput = formElement.querySelector(".popup__field_name");
-let jobInput = formElement.querySelector(".popup__field_job");
+function closePopup() {
+  popup.classList.remove('popup_opened');
+}
 
 function handleFormSubmit (evt) {
-    evt.preventDefault(); 
-
-let newName = nameInput.value;
-let newJob = jobInput.value;
-let name = document.querySelector(".profile-info__name");
-let job = document.querySelector(".profile-info__description");
-
-    name.textContent = newName;
-    job.textContent = newJob;
-    popup.classList.toggle("popup_opened");
-    nameInput.setAttribute("placeholder", newName);
-    jobInput.setAttribute("placeholder", newJob);
-    nameInput.value = '';
-    jobInput.value = '';
+  evt.preventDefault();
+    nameMain.textContent = nameInput.value;
+    jobMain.textContent = jobInput.value;
+    closePopup();
 }
+
+editButton.addEventListener('click', openPopup);
+closeButton.addEventListener('click', closePopup);
 
 formElement.addEventListener('submit', handleFormSubmit);

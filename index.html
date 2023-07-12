@@ -21,38 +21,7 @@
       <button type="button" class="profile__add-button"></button>
     </section>
     <section aria-label="Элементы">
-      <ul class="elements">
-        <li class="element">
-          <img src="./images/gallery/capenelsonAU.jpg" alt="Скалистый обрыв Кейп Нельсон" class="element__image">
-          <h2 class="element__description">Кейп Нельсон</h2>
-          <button type="button" class="element__button-like"></button>
-        </li>
-        <li class="element">
-          <img src="./images/gallery/dombay.png" alt="Горы и лесной массив Домбая" class="element__image">
-          <h2 class="element__description">Домбай</h2>
-          <button type="button" class="element__button-like"></button>
-        </li>
-        <li class="element">
-          <img src="./images/gallery/elbrus.png" alt="Пустыня с видом верхушки Эльбруса вдалеке" class="element__image">
-          <h2 class="element__description">Эльбрус</h2>
-          <button type="button" class="element__button-like"></button>
-        </li>
-        <li class="element">
-          <img src="./images/gallery/karachayevsk.jpg" alt="Храм в Карачаево-Черкессии" class="element__image">
-          <h2 class="element__description">Карачаево-Черкессия</h2>
-          <button type="button" class="element__button-like"></button>
-        </li>
-        <li class="element">
-          <img src="./images/gallery/kolchukUS.jpg" alt="озеро Колчак на фоне гор" class="element__image">
-          <h2 class="element__description">Колчак</h2>
-          <button type="button" class="element__button-like"></button>
-        </li>
-        <li class="element">
-          <img src="./images/gallery/swithzerland.jpg" alt="Заснеженные горы Швейцарских альп" class="element__image">
-          <h2 class="element__description">Горы Швейцарии</h2>
-          <button type="button" class="element__button-like"></button>
-        </li>
-      </ul>
+      <ul class="elements"></ul>
     </section>
   </main>
   <footer class="footer">
@@ -65,10 +34,42 @@
       <form name="form" class="popup__form">
         <input type="text" class="popup__field popup__field_type_name" name="name">
         <input type="text" class="popup__field popup__field_type_job" name="job">
-        <button type="submit" class="popup__button-submit">Сохранить</button>
+        <button type="submit" class="popup__button-submit popup__button-submit_type_save">Сохранить</button>
       </form>
     </div>
   </div>
+  <div class="popup popup_type_newitem">
+    <div class="popup__container">
+      <button type="button" class="popup__button-close popup__button-close_type_newitem"></button>
+      <h2 class="popup__label">Новое место</h2>
+      <form name="form" class="popup__form popup__form_type_newitem">
+        <input type="text" class="popup__field popup__field_type_newitem-name" name="itemname" placeholder="Название">
+        <input type="text" class="popup__field popup__field_type_newitem-link" name="link"
+          placeholder="Ссылка на картинку">
+        <button type="submit" class="popup__button-submit popup__button-submit_type_create">Создать</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_type_fullview">
+    <div class="popup__image-container">
+      <figure>
+        <img alt="открытое изображение" class="popup__image">
+        <figcaption class="popup__image-name"></figcaption>
+      </figure>
+      <button type="button" class="popup__button-close popup__button-close_type_fullview"></button>
+    </div>
+  </div>
+
+  <template id="element-template">
+    <li class="element">
+      <img class="element__image" alt="изображение">
+      <h2 class="element__description"></h2>
+      <button type="button" class="element__button-like"></button>
+      <button type="button" class="element__button-trash"></button>
+    </li>
+  </template>
+
+  <script src="./scripts/initialcards.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
 

@@ -6,4 +6,5 @@
   grid-template-rows: auto 80px;
   grid-template-columns: 240px auto;
   margin: 0 auto;
+  position: relative;
 }

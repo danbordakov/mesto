@@ -67,6 +67,8 @@ function addCardSubmit(evt) {
   evt.preventDefault();
   addCard(createCard(inputNewItemName.value, inputNewItemLink.value));
   closePopup(popupNewItem);
+  inputNewItemName.value = '';
+  inputNewItemLink.value = '';
 }
 
 //функция лайка карточки

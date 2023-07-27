@@ -9,8 +9,8 @@ const buttonCloseEditInfo = popupEditInfo.querySelector('.popup__button-close');
 const buttonNewItem = document.querySelector('.profile__add-button');
 const buttonCloseNewItem = popupNewItem.querySelector('.popup__button-close');  
 const buttonCloseFullview = popupFullview.querySelector('.popup__button-close');
-const buttonCreate = document.querySelector('.popup__button-submit_type_create');
-const buttonSave = document.querySelector('.popup__button-submit_type_save');
+const buttonCreateNewItem = document.querySelector('.popup__button-submit_type_create');
+const buttonSaveEditedInfo = document.querySelector('.popup__button-submit_type_save');
  
 const inputName = formEditInfo.querySelector('.popup__field_type_name'); 
 const inputJob = formEditInfo.querySelector('.popup__field_type_job'); 
@@ -27,22 +27,27 @@ const nameFullview = popupFullview.querySelector('.popup__image-name');
 //открытие форм + слушатели на закрытие окон по esc или щелчку в оверлее
 function openPopup(popupType) { 
   popupType.classList.add('popup_opened');
-  document.addEventListener('keydown', (evt) => {
-    console.log('add');
-    if (evt.key === 'Escape') {
-      closePopup(popupType);
-    }
-  });
-  popupType.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup')) {
-      closePopup(popupType);
-    }
-  });
+  document.addEventListener('keydown', closePopupByEsc);
+  popupType.addEventListener('click', closePopupByOverlayClick);
+}
+
+function closePopupByEsc(evt) {
+  if (evt.key === 'Escape') {
+    closePopup(document.querySelector('.popup_opened'));
+  }
+}
+
+function closePopupByOverlayClick(evt) {
+  if (evt.target.classList.contains('popup_opened')) {
+    closePopup(evt.currentTarget);
+  }
 }
 
 //закрытие форм
 function closePopup(popupType) { 
-  popupType.classList.remove('popup_opened'); 
+  popupType.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupByEsc);
+  popupType.removeEventListener('click', closePopupByOverlayClick);
 }
 
 //открытие формы профиля с заполненными данными
@@ -50,12 +55,12 @@ function openPopupEditInfo(){
   openPopup(popupEditInfo);
   inputName.value = nameMain.textContent; 
   inputJob.value = jobMain.textContent;
-  buttonSave.classList.add('popup__button-submit_type_unenabled');
-  buttonSave.disabled = true;
+  buttonSaveEditedInfo.classList.add('popup__button-submit_type_unenabled');
+  buttonSaveEditedInfo.disabled = true;
 }
 
 //изменение данных пользователя через форму
-function handleFormSubmit (evt) { 
+function handleEditInfoSubmit (evt) { 
   evt.preventDefault(); 
   nameMain.textContent = inputName.value; 
   jobMain.textContent = inputJob.value; 
@@ -70,7 +75,7 @@ function createCard(cardName, cardLink){
   card.querySelector('.element__description').textContent = cardName;
   card.querySelector('.element__button-like').addEventListener('click', likeCard);
   card.querySelector('.element__button-trash').addEventListener('click', () => deleteCard(card));
-  card.querySelector('.element__image').addEventListener('click', () => openFullviewImage(card));
+  card.querySelector('.element__image').addEventListener('click', () => openFullviewImage(cardName, cardLink));
   return card;
 }
 
@@ -85,14 +90,13 @@ initialCards.forEach(function(card){
 });
 
 //добавление новой карточки через форму
-function addCardSubmit(evt) {
+function handleNewItemSubmit(evt) {
   evt.preventDefault();
   addCard(createCard(inputNewItemName.value, inputNewItemLink.value));
   closePopup(popupNewItem);
-  inputNewItemName.value = '';
-  inputNewItemLink.value = '';
-  buttonCreate.classList.add('popup__button-submit_type_unenabled');
-  buttonCreate.disabled = true;
+  formNewItem.reset();
+  buttonCreateNewItem.classList.add('popup__button-submit_type_unenabled');
+  buttonCreateNewItem.disabled = true;
 }
 
 //функция лайка карточки
@@ -106,10 +110,10 @@ function deleteCard(card){
 }
 
 //функция открытия полного изображения
-function openFullviewImage(card){
-  imageFullview.src = card.querySelector('.element__image').src;
-  imageFullview.alt = card.querySelector('.element__image').src;
-  nameFullview.textContent = card.querySelector('.element__description').textContent;
+function openFullviewImage(cardName, cardLink){
+  imageFullview.src = cardLink;
+  imageFullview.alt = cardName;
+  nameFullview.textContent = cardName;
   openPopup(popupFullview);
 }
 
@@ -118,13 +122,6 @@ buttonCloseEditInfo.addEventListener('click', ()=>closePopup(popupEditInfo));
 buttonNewItem.addEventListener('click', ()=>openPopup(popupNewItem));
 buttonCloseNewItem.addEventListener('click', ()=>closePopup(popupNewItem));
 buttonCloseFullview.addEventListener('click', ()=>closePopup(popupFullview));
-formEditInfo.addEventListener('submit', handleFormSubmit);
-formNewItem.addEventListener('submit', addCardSubmit);
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__field',
-  submitButtonSelector: '.popup__button-submit',
-  inactiveButtonClass: 'popup__button-submit_type_unenabled',
-  inputErrorClass: 'popup__field_type_error',
-  errorClass: 'popup__field-error_visible'
-}); 
+formEditInfo.addEventListener('submit', handleEditInfoSubmit);
+formNewItem.addEventListener('submit', handleNewItemSubmit);
+enableValidation(config); 

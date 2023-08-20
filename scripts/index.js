@@ -57,8 +57,7 @@ function openPopupEditInfo(){
   openPopup(popupEditInfo);
   inputName.value = nameMain.textContent; 
   inputJob.value = jobMain.textContent;
-  buttonSaveEditedInfo.classList.add('popup__button-submit_type_unenabled');
-  buttonSaveEditedInfo.disabled = true;
+  validation_editinfo.disabledButtonState();
 }
 
 //изменение данных пользователя через форму
@@ -69,21 +68,24 @@ function handleEditInfoSubmit (evt) {
   closePopup(popupEditInfo); 
 }
 //-------------------------------------------------------------------------------------------------------------------------
+//функция инстанцирования класса Card
+function instantiationCard(cardName, cardLink, templateSelector) {
+  const card = new Card(cardName, cardLink, templateSelector);
+  return card;
+}
+
 //функция добавления первых карточек из массива
 initialCards.forEach((item) => {
-  const card = new Card(item.name, item.link, '#element-template');
-  elements.append(card.createCard());
+  elements.append(instantiationCard(item.name, item.link, '#element-template').createCard());
 });
 
 //добавление новой карточки через форму
 function handleNewItemSubmit(evt) {
   evt.preventDefault();
-  const card = new Card(inputNewItemName.value, inputNewItemLink.value, '#element-template');
-  elements.prepend(card.createCard());
+  elements.prepend(instantiationCard(inputNewItemName.value, inputNewItemLink.value, '#element-template').createCard());
   closePopup(popupNewItem);
   formNewItem.reset();
-  buttonCreateNewItem.classList.add('popup__button-submit_type_unenabled');
-  buttonCreateNewItem.disabled = true;
+  validation_newitem.disabledButtonState();
 }
 
 buttonEditInfo.addEventListener('click', openPopupEditInfo); 

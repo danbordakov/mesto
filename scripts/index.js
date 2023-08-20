@@ -14,8 +14,8 @@ const buttonCloseEditInfo = popupEditInfo.querySelector('.popup__button-close');
 const buttonNewItem = document.querySelector('.profile__add-button');
 const buttonCloseNewItem = popupNewItem.querySelector('.popup__button-close');  
 const buttonCloseFullview = popupFullview.querySelector('.popup__button-close');
-const buttonCreateNewItem = document.querySelector('.popup__button-submit_type_create');
-const buttonSaveEditedInfo = document.querySelector('.popup__button-submit_type_save');
+// const buttonCreateNewItem = document.querySelector('.popup__button-submit_type_create');
+// const buttonSaveEditedInfo = document.querySelector('.popup__button-submit_type_save');
  
 const inputName = formEditInfo.querySelector('.popup__field_type_name'); 
 const inputJob = formEditInfo.querySelector('.popup__field_type_job'); 

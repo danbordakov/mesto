@@ -6,75 +6,73 @@ class FormValidator {
     this._inactiveButtonClass = config.inactiveButtonClass;
     this._inputErrorClass = config.inputErrorClass;
     this._errorClass = config.errorClass;
-    this._validatingForm = validatingForm;
+    // this._validatingForm = validatingForm;
+    this._formElement = document.querySelector(validatingForm);
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
   }
 
   enableValidation() {
-    const formElement = document.querySelector(this._validatingForm);
-    this._setEventListeners(formElement);
+    this._setEventListeners(this._formElement);
   }
 
-  _setEventListeners(_formElement) {
-    const _inputList = Array.from(_formElement.querySelectorAll(this._inputSelector));
-    const _buttonElement = _formElement.querySelector(this._submitButtonSelector);
-
-    this._toggleButtonState(_inputList, _buttonElement);
-    _inputList.forEach(_inputElement => {
+  _setEventListeners() {
+    this._toggleButtonState(this._inputList, this._buttonElement);
+    this._inputList.forEach(_inputElement => {
       _inputElement.addEventListener('input', () => {
-        this._isValid(_formElement, _inputElement);
-        this._toggleButtonState(_inputList, _buttonElement);
+        this._isValid(_inputElement);
+        this._toggleButtonState();
       })
     })
-
   }
 
 //методы для надписей ошибок
 //--------------------------------------------------------------------------------------
-  _isValid(_formElement, _inputElement) {
+  _isValid(_inputElement) {
     if (!_inputElement.validity.valid) {
-      this._showInputError(_formElement, _inputElement, _inputElement.validationMessage)
+      this._showInputError(_inputElement);
     } else {
-      this._hideInputError(_formElement, _inputElement)
+      this._hideInputError(_inputElement);
     }
   }
 
-  _showInputError(_formElement, _inputElement, _errorMessage) {
-    const _errorElement = _formElement.querySelector(`.${_inputElement.id}-error`);
+  _showInputError(_inputElement) {
+    const _errorElement = this._formElement.querySelector(`.${_inputElement.id}-error`);
     _inputElement.classList.add(this._inputErrorClass);
     _errorElement.classList.add(this._errorClass);
-    _errorElement.textContent = _errorMessage;
+    _errorElement.textContent = _inputElement.validationMessage;
   }
 
-  _hideInputError(_formElement, _inputElement) {
-    const _errorElement = _formElement.querySelector(`.${_inputElement.id}-error`);
+  _hideInputError(_inputElement) {
+    const _errorElement = this._formElement.querySelector(`.${_inputElement.id}-error`);
     _inputElement.classList.remove(this._inputErrorClass);
     _errorElement.classList.remove(this._errorClass);
   }
 
 //методы для кнопок
 //--------------------------------------------------------------------------------------
-  _hasInvalidInput(_inputList) {
-    return _inputList.some((_inputElement) => {
+  _hasInvalidInput() {
+    return this._inputList.some((_inputElement) => {
       return !_inputElement.validity.valid;
     })
   };
 
-  _toggleButtonState(_inputList, _buttonElement) {
-    if (this._hasInvalidInput(_inputList)) {
-      this._disabledButtonState(_buttonElement);
+  _toggleButtonState() {
+    if (this._hasInvalidInput()) {
+      this.disabledButtonState(this._buttonElement);
     } else {
-      this._enabledButtonState(_buttonElement);
+      this._enabledButtonState();
     }
   };
   
-  _enabledButtonState(_buttonElement) {
-    _buttonElement.classList.remove(this._inactiveButtonClass);
-    _buttonElement.disabled = false;
+  _enabledButtonState() {
+    this._buttonElement.classList.remove(this._inactiveButtonClass);
+    this._buttonElement.disabled = false;
   }
   
-  _disabledButtonState(_buttonElement) {
-    _buttonElement.classList.add(this._inactiveButtonClass);
-    _buttonElement.disabled = true;
+  disabledButtonState() {
+    this._buttonElement.classList.add(this._inactiveButtonClass);
+    this._buttonElement.disabled = true;
   }
 }
 

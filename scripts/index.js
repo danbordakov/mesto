@@ -1,3 +1,8 @@
+import initialCards from "./initialcards.js";
+import config from "./constants.js";
+import Card from "./Cards.js";
+import FormValidator from "./FormValidator.js"
+
 const popupEditInfo = document.querySelector('.popup_type_editinfo');
 const formEditInfo = popupEditInfo.querySelector('.popup__form');
 const popupNewItem = document.querySelector('.popup_type_newitem');
@@ -19,13 +24,10 @@ const jobMain = document.querySelector('.profile__description');
 const inputNewItemName = formNewItem.querySelector('.popup__field_type_newitem-name');
 const inputNewItemLink = formNewItem.querySelector('.popup__field_type_newitem-link');
 
-const elementTemplate = document.querySelector('#element-template').content;
 const elements = document.querySelector('.elements');
-const imageFullview = popupFullview.querySelector('.popup__image');
-const nameFullview = popupFullview.querySelector('.popup__image-name');
 
 //открытие форм + слушатели на закрытие окон по esc или щелчку в оверлее
-function openPopup(popupType) { 
+export function openPopup(popupType) { 
   popupType.classList.add('popup_opened');
   document.addEventListener('keydown', closePopupByEsc);
   popupType.addEventListener('click', closePopupByOverlayClick);
@@ -66,55 +68,22 @@ function handleEditInfoSubmit (evt) {
   jobMain.textContent = inputJob.value; 
   closePopup(popupEditInfo); 
 }
-
-//функция создания карточки
-function createCard(cardName, cardLink){
-  const card = elementTemplate.querySelector('.element').cloneNode(true);
-  card.querySelector('.element__image').src = cardLink;
-  card.querySelector('.element__image').alt = cardName;
-  card.querySelector('.element__description').textContent = cardName;
-  card.querySelector('.element__button-like').addEventListener('click', likeCard);
-  card.querySelector('.element__button-trash').addEventListener('click', () => deleteCard(card));
-  card.querySelector('.element__image').addEventListener('click', () => openFullviewImage(cardName, cardLink));
-  return card;
-}
-
-//функция добавления карточки на страницу
-function addCard(cardCreation){
-  elements.prepend(cardCreation);
-}
-
-//добавление первых карточек по умолчанию
-initialCards.forEach(function(card){
-  addCard(createCard(card.name, card.link));
+//-------------------------------------------------------------------------------------------------------------------------
+//функция добавления первых карточек из массива
+initialCards.forEach((item) => {
+  const card = new Card(item.name, item.link, '#element-template');
+  elements.append(card.createCard());
 });
 
 //добавление новой карточки через форму
 function handleNewItemSubmit(evt) {
   evt.preventDefault();
-  addCard(createCard(inputNewItemName.value, inputNewItemLink.value));
+  const card = new Card(inputNewItemName.value, inputNewItemLink.value, '#element-template');
+  elements.prepend(card.createCard());
   closePopup(popupNewItem);
   formNewItem.reset();
   buttonCreateNewItem.classList.add('popup__button-submit_type_unenabled');
   buttonCreateNewItem.disabled = true;
-}
-
-//функция лайка карточки
-function likeCard(evt) {
-  evt.target.classList.toggle('element__button-like_active');
-}
-
-//функция удаления карточки
-function deleteCard(card){
-  card.remove();
-}
-
-//функция открытия полного изображения
-function openFullviewImage(cardName, cardLink){
-  imageFullview.src = cardLink;
-  imageFullview.alt = cardName;
-  nameFullview.textContent = cardName;
-  openPopup(popupFullview);
 }
 
 buttonEditInfo.addEventListener('click', openPopupEditInfo); 
@@ -124,4 +93,9 @@ buttonCloseNewItem.addEventListener('click', ()=>closePopup(popupNewItem));
 buttonCloseFullview.addEventListener('click', ()=>closePopup(popupFullview));
 formEditInfo.addEventListener('submit', handleEditInfoSubmit);
 formNewItem.addEventListener('submit', handleNewItemSubmit);
-enableValidation(config); 
+
+//валидации
+const validation_editinfo = new FormValidator(config, '.popup__form_type_editinfo');
+validation_editinfo.enableValidation();
+const validation_newitem = new FormValidator(config, '.popup__form_type_newitem');
+validation_newitem.enableValidation();

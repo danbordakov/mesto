@@ -1,9 +1,9 @@
-import { openPopup } from "./index.js";
 class Card {
-  constructor(cardName, cardLink, templateSelector) {
+  constructor(cardName, cardLink, templateSelector, handleCardClick) {
     this._cardName = cardName;
     this._cardLink = cardLink;
     this._templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -33,16 +33,6 @@ class Card {
     this._card = null;
   }
 
-  _openFullviewImage() {
-    const popupFullview = document.querySelector('.popup_type_fullview');
-    const imageFullview = document.querySelector('.popup_type_fullview').querySelector('.popup__image');
-    const nameFullview = document.querySelector('.popup_type_fullview').querySelector('.popup__image-name');
-    imageFullview.src = this._cardLink;
-    imageFullview.alt = this._cardName;
-    nameFullview.textContent = this._cardName;
-    openPopup(popupFullview);
-  }
-
   _setEventListeners() {
     this._card
     .querySelector('.element__button-like')
@@ -54,7 +44,7 @@ class Card {
 
     this._card
     .querySelector('.element__image')
-    .addEventListener('click', () => {this._openFullviewImage()});
+    .addEventListener('click', () => {this._handleCardClick()});
   }
 
   createCard() {

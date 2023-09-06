@@ -2,20 +2,18 @@
 <html lang="ru">
 
 <head>
-  <link rel="stylesheet" href="pages/index.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
-  <script type="module" src="./scripts/index.js"></script>
 </head>
 
 <body class="page">
   <header class="header">
-    <img src="./images/logo.svg" alt="Логотип сайта" class="header__logo">
+    <img src="<%=require('./images/logo.svg')%>" alt="Логотип сайта" class="header__logo">
   </header>
   <main>
     <section class="profile" aria-label="Профиль">
-      <img src="./images/profile_avatar.jpg" alt="фотография профиля" class="profile__avatar">
+      <img src="<%=require('./images/profile_avatar.jpg')%>" alt="фотография профиля" class="profile__avatar">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
       <p class="profile__description">Исследователь океана</p>
       <button type="button" class="profile__edit-button" aria-label="Изменить"></button>
@@ -62,11 +60,11 @@
   </div>
   <div class="popup popup_type_fullview">
     <div class="popup__image-container">
+      <button type="button" class="popup__button-close" aria-label="Закрыть"></button>
       <figure>
         <img alt="открытое изображение" class="popup__image" src="#">
         <figcaption class="popup__image-name"></figcaption>
       </figure>
-      <button type="button" class="popup__button-close" aria-label="Закрыть"></button>
     </div>
   </div>
   <template id="element-template">

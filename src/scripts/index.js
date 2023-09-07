@@ -14,48 +14,54 @@ const inputName = document.querySelector('.popup__field_type_name');
 const inputJob = document.querySelector('.popup__field_type_job'); 
 const inputNewItemName = document.querySelector('.popup__field_type_newitem-name');
 const inputNewItemLink = document.querySelector('.popup__field_type_newitem-link');
-const nameMain = document.querySelector('.profile__name'); 
-const jobMain = document.querySelector('.profile__description');
-const elements = document.querySelector('.elements');
+const editInfo = new UserInfo({
+  nameSelector: 'profile__name',
+  jobSelector: 'profile__description'
+});
 
 //форма правки профиля через прослойку PopupWithForm
 const popupEditInfo = new PopupWithForm('.popup_type_editinfo', () => {
-  const editInfo = new UserInfo(inputName.value, inputJob.value);
-  editInfo.setUserInfo();
+  editInfo.setUserInfo(inputName.value, inputJob.value);
 });
 
 buttonEditInfo.addEventListener('click', () => {
   popupEditInfo.open();
-  const editInfo = new UserInfo(nameMain.textContent, jobMain.textContent);
   inputName.value = editInfo.getUserInfo().name;
   inputJob.value = editInfo.getUserInfo().job;
-  console.log(inputName.value);
-  validation_editinfo.disabledButtonState();
+  validationEditInfo.disabledButtonState();
 });
 
 popupEditInfo.setEventListeners();
 
 //форма новой карточки через прослойку PopupWithForm
 const popupNewItem = new PopupWithForm('.popup_type_newitem', () => {
-  elements
-  .prepend(instantiationCard(inputNewItemName.value, inputNewItemLink.value, '#element-template')
+  cardsList
+  .setItem(instantiateCard(inputNewItemName.value, inputNewItemLink.value, '#element-template')
   .createCard());
 });
 
 buttonNewItem.addEventListener('click', () => {
   popupNewItem.open();
-  validation_newitem.disabledButtonState();
+  validationNewItem.disabledButtonState();
 });
 
 popupNewItem.setEventListeners();
 
+// Преобразуйте класс Card
+// Свяжите класс Card c попапом.
+// Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick.
+// Эта функция должна открывать попап с картинкой при клике на карточку.
+
+//открытие полного изображения по клику на картинку
+function handleCardClick(cardLink, cardName) {
+  const popupFullView = new PopupWithImage('.popup_type_fullview');
+  popupFullView.setEventListeners();
+  popupFullView.open(cardLink, cardName);
+}
+
 //инстанцирование класса Card
-function instantiationCard(cardName, cardLink, templateSelector) {
-  const card = new Card(cardName, cardLink, templateSelector, () => {
-    const popupFullView = new PopupWithImage('.popup_type_fullview');
-    popupFullView.setEventListeners();
-    popupFullView.open(cardLink, cardName);
-  });
+function instantiateCard(cardName, cardLink, templateSelector) {
+  const card = new Card(cardName, cardLink, templateSelector, () => handleCardClick(cardLink, cardName));
   return card;
 }
 
@@ -63,13 +69,15 @@ function instantiationCard(cardName, cardLink, templateSelector) {
 const cardsList = new Section({
   items: initialCards,
   renderer: ((card) => {
-    cardsList.setItem(instantiationCard(card.name, card.link, '#element-template').createCard());
+    cardsList
+    .setItem(instantiateCard(card.name, card.link, '#element-template')
+    .createCard());
   })
 }, '.elements');
 cardsList.addItem();
 
 //валидации
-const validation_editinfo = new FormValidator(config, '.popup__form_type_editinfo');
-validation_editinfo.enableValidation();
-const validation_newitem = new FormValidator(config, '.popup__form_type_newitem');
-validation_newitem.enableValidation();
+const validationEditInfo = new FormValidator(config, '.popup__form_type_editinfo');
+validationEditInfo.enableValidation();
+const validationNewItem = new FormValidator(config, '.popup__form_type_newitem');
+validationNewItem.enableValidation();

@@ -14,20 +14,21 @@ const inputName = document.querySelector('.popup__field_type_name');
 const inputJob = document.querySelector('.popup__field_type_job'); 
 const inputNewItemName = document.querySelector('.popup__field_type_newitem-name');
 const inputNewItemLink = document.querySelector('.popup__field_type_newitem-link');
-const editInfo = new UserInfo({
+
+//форма правки профиля через прослойки PopupWithForm и UserInfo
+const userInfo = new UserInfo({
   nameSelector: 'profile__name',
   jobSelector: 'profile__description'
 });
 
-//форма правки профиля через прослойку PopupWithForm
 const popupEditInfo = new PopupWithForm('.popup_type_editinfo', () => {
-  editInfo.setUserInfo(inputName.value, inputJob.value);
+  userInfo.setUserInfo(inputName.value, inputJob.value);
 });
 
 buttonEditInfo.addEventListener('click', () => {
   popupEditInfo.open();
-  inputName.value = editInfo.getUserInfo().name;
-  inputJob.value = editInfo.getUserInfo().job;
+  inputName.value = userInfo.getUserInfo().name;
+  inputJob.value = userInfo.getUserInfo().job;
   validationEditInfo.disabledButtonState();
 });
 
@@ -47,21 +48,13 @@ buttonNewItem.addEventListener('click', () => {
 
 popupNewItem.setEventListeners();
 
-// Преобразуйте класс Card
-// Свяжите класс Card c попапом.
-// Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick.
-// Эта функция должна открывать попап с картинкой при клике на карточку.
-
 //открытие полного изображения по клику на картинку
-function handleCardClick(cardLink, cardName) {
-  const popupFullView = new PopupWithImage('.popup_type_fullview');
-  popupFullView.setEventListeners();
-  popupFullView.open(cardLink, cardName);
-}
+const popupFullView = new PopupWithImage('.popup_type_fullview');
+popupFullView.setEventListeners();
 
 //инстанцирование класса Card
 function instantiateCard(cardName, cardLink, templateSelector) {
-  const card = new Card(cardName, cardLink, templateSelector, () => handleCardClick(cardLink, cardName));
+  const card = new Card(cardName, cardLink, templateSelector, () => popupFullView.open(cardLink, cardName));
   return card;
 }
 

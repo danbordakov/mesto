@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
-<script defer src="main.735371583b901bd51f05.js"></script><link href="main.css" rel="stylesheet"></head>
+<script defer src="main.bcd451318d114a3d433b.js"></script><link href="main.css" rel="stylesheet"></head>
 
 <body class="page">
   <header class="header">
@@ -13,9 +13,10 @@
   </header>
   <main>
     <section class="profile" aria-label="Профиль">
-      <img src="images/profile_avatar.658a4e803f66b8334f3b.jpg" alt="фотография профиля" class="profile__avatar">
-      <h1 class="profile__name">Жак-Ив Кусто</h1>
-      <p class="profile__description">Исследователь океана</p>
+      <button type="button" class="profile__change-avatar-button" aria-label="Изменить аватар"></button>
+      <img alt="фотография профиля" class="profile__avatar">
+      <h1 class="profile__name"></h1>
+      <p class="profile__description"></p>
       <button type="button" class="profile__edit-button" aria-label="Изменить"></button>
       <button type="button" class="profile__add-button" aria-label="Добавить"></button>
     </section>
@@ -58,6 +59,27 @@
       </form>
     </div>
   </div>
+  <div class="popup popup_type_avatar">
+    <div class="popup__container">
+      <button type="button" class="popup__button-close" aria-label="Закрыть"></button>
+      <h2 class="popup__label">Обновить аватар</h2>
+      <form name="form" class="popup__form popup__form_type_avatar" novalidate>
+        <input id="avatar-link-input" type="url" class="popup__field popup__field_type_avatar-link" name="link"
+          placeholder="Ссылка на аватар" required>
+        <span class="popup__field-error avatar-link-input-error">&nbsp;</span>
+        <button type="submit" class="popup__button-submit popup__button-submit_type_avatar"
+          aria-label="Сохранить">Сохранить</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_type_delete-confirm">
+    <div class="popup__container popup__container_type_delete-confirm">
+      <button type="button" class="popup__button-close" aria-label="Закрыть"></button>
+      <h2 class="popup__label">Вы уверены?</h2>
+      <button type="submit" class="popup__button-submit popup__button-submit_type_delete-confirm"
+        aria-label="Удалить">Да</button>
+    </div>
+  </div>
   <div class="popup popup_type_fullview">
     <div class="popup__image-container">
       <button type="button" class="popup__button-close" aria-label="Закрыть"></button>
@@ -72,6 +94,7 @@
       <img class="element__image" alt="изображение">
       <h2 class="element__description"></h2>
       <button type="button" class="element__button-like" aria-label="Нравится"></button>
+      <p class="element__like-counter">1</p>
       <button type="button" class="element__button-trash" aria-label="Удалить"></button>
     </li>
   </template>

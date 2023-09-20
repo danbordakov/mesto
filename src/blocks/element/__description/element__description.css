@@ -6,6 +6,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  margin-left: 21px;
+  margin: 0 0 0 21px;
   height: 29px;
+  align-self: center;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 4;
 }

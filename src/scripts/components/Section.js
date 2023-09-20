@@ -5,8 +5,9 @@ class Section {
     this._container = document.querySelector(selector);
   }
 
+
   setItem(element) {
-    this._container.prepend(element);
+    this._container.append(element);
   }
 
   addItem() {

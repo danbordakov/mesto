@@ -127,8 +127,6 @@ function instantiateCard(cardName, cardLink, cardLikes, cardID, ownerID, myID, c
   const card = new Card(
     cardName, cardLink, cardLikes, cardID, ownerID, myID, cardLikeID, templateSelector,
     () => popupFullView.open(cardLink, cardName),
-    // cardID => api.deleteCard(cardID),
-    
     //--------handleDeleteCardClick------------
     () => {
       popupWithSubmit.detectCardID(cardID);

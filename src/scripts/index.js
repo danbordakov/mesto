@@ -6,7 +6,7 @@ import PopupWithForm from "./components/PopupWithForm.js";
 import PopupWithImage from "./components/PopupWithImage.js";
 import UserInfo from "./components/UserInfo.js";
 import PopupWithSubmit from "./components/PopupWithSubmit.js";
-import API from "./API.js";
+import API from "./components/API.js";
 import '../pages/index.css';
 
 const buttonEditInfo = document.querySelector('.profile__edit-button'); 
@@ -100,6 +100,11 @@ const popupNewItem = new PopupWithForm('.popup_type_newitem', () => {
     cardName: inputNewItemName.value,
     cardLink: inputNewItemLink.value
   })
+  .then((card) => {
+    cardsList
+    .setNewItem(instantiateCard(card.name, card.link, card.likes.length, card._id, card.owner._id, userInfo.getUserInfo().id, card.likes.map(likes => likes._id), '#element-template')
+    .createCard());
+  })
   .catch((err) => {
     console.log(err);
   })
@@ -134,7 +139,6 @@ function instantiateCard(cardName, cardLink, cardLikes, cardID, ownerID, myID, c
       popupWithSubmit.formSubmitCallback(
         //--------link (formSubmit) ----------
         (id) => {
-          console.log('форм субмит отработал');
         api.deleteCard(id)
         .then(() => {
           card.delete();
@@ -154,19 +158,19 @@ function instantiateCard(cardName, cardLink, cardLikes, cardID, ownerID, myID, c
   return card;
 }
 
+
+const cardsList = new Section({
+  renderer: ((card) => {
+    cardsList
+    .setItem(instantiateCard(card.name, card.link, card.likes.length, card._id, card.owner._id, userInfo.getUserInfo().id, card.likes.map(likes => likes._id), '#element-template')
+    .createCard());
+  })
+}, '.elements');
+
 // добавление всех карточек из БД через прослойку Section
 api.getAllCards()
   .then((cards) => {
-    let cardsList = new Section({
-      items: cards,
-      renderer: ((card) => {
-        cardsList
-        .setItem(instantiateCard(card.name, card.link, card.likes.length, card._id, card.owner._id, userInfo.getUserInfo().id, card.likes.map(likes => likes._id), '#element-template')
-        .createCard());
-      })
-    }, '.elements');
-    
-    cardsList.addItem();
+    cardsList.addItem(cards)
   })
   .catch((err) => {
     console.log(err);

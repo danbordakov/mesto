@@ -14,13 +14,13 @@ class UserInfo {
   }
 
   setUserInfo(name, job, id) {
-    this._name.textContent = name;
-    this._job.textContent = job;
-    this._id = id;
+    if (name) {this._name.textContent = name};
+    if (job) {this._job.textContent = job};
+    if (id) {this._id = id};
   }
 
   setAvatar(avatar) {
-    this._avatar.src = avatar;
+    if (avatar) {this._avatar.src = avatar};
   }
 }
 

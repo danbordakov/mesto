@@ -2,8 +2,7 @@ import Popup from "./Popup.js";
 
 class PopupWithSubmit extends Popup {
   constructor(selector){
-    super(selector);
-    // this._handleFormSubmit = handleFormSubmit;
+    super(selector)
   }
 
 detectCardID(id) {
@@ -15,9 +14,7 @@ detectCardID(id) {
     super.setEventListeners();
     this._popupType.addEventListener('submit', (evt) => {
       evt.preventDefault();
-      // console.log('submit');
       this._formSubmit(this._cardID);
-      this.close();
     })
   }
 

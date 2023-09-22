@@ -35,16 +35,6 @@ const userInfo = new UserInfo({
   avatarSelector: 'profile__avatar'
 });
 
-//стартовая выгрузка данных пользователя из БД
-api.getUserInfo()
-  .then((user) => {
-userInfo.setUserInfo(user.name, user.about, user._id);
-userInfo.setAvatar(user.avatar);
-  })
-  .catch((err) => {
-    console.log(err);
-  }); 
-
 const popupEditInfo = new PopupWithForm('.popup_type_editinfo', () => {
   //отображение новых данных пользователя на странице
   userInfo.setUserInfo(inputName.value, inputJob.value);
@@ -54,6 +44,7 @@ const popupEditInfo = new PopupWithForm('.popup_type_editinfo', () => {
     newName: inputName.value,
     newJob: inputJob.value
   })
+  .then(() => {popupEditInfo.close()})
   .catch((err) => {
     console.log(err);
   })
@@ -78,6 +69,7 @@ const popupChangeAvatar = new PopupWithForm('.popup_type_avatar', () => {
   api.setAvatar({
     newAvatar: inputAvatar.value
   })
+  .then(() => {popupChangeAvatar.close()})
   .catch((err) => {
     console.log(err);
   })
@@ -104,6 +96,7 @@ const popupNewItem = new PopupWithForm('.popup_type_newitem', () => {
     cardsList
     .setNewItem(instantiateCard(card.name, card.link, card.likes.length, card._id, card.owner._id, userInfo.getUserInfo().id, card.likes.map(likes => likes._id), '#element-template')
     .createCard());
+    popupNewItem.close();
   })
   .catch((err) => {
     console.log(err);
@@ -142,18 +135,27 @@ function instantiateCard(cardName, cardLink, cardLikes, cardID, ownerID, myID, c
         api.deleteCard(id)
         .then(() => {
           card.delete();
+          popupWithSubmit.close();
         })
         .catch((err) => {
           console.log(err);
         }); 
       }
       //--------link (formSubmit) ----------
-      )
+      )    
     },
     //--------handleDeleteCardClick------------
 
-    cardID => api.likeCard(cardID),
-    cardID => api.dislikeCard(cardID),
+    cardID => api.likeCard(cardID)
+    .then((likes) => {
+      card.countLikes(likes);
+      console.log(likes);
+    }),
+    cardID => api.dislikeCard(cardID)
+    .then((likes) => {
+      card.countLikes(likes);
+      console.log(likes);
+    }),
 );
   return card;
 }
@@ -167,14 +169,19 @@ const cardsList = new Section({
   })
 }, '.elements');
 
-// добавление всех карточек из БД через прослойку Section
-api.getAllCards()
-  .then((cards) => {
-    cardsList.addItem(cards)
+//стартовая выгрузка данных пользователя из БД + добавление всех карточек из БД через прослойку Section
+//выполннено посредством параллельный promise
+Promise.all([api.getUserInfo(), api.getAllCards()])
+  .then(([user, cards]) => {
+    //сначала получили данные пользователя, в т.ч. id
+    userInfo.setUserInfo(user.name, user.about, user._id);
+    userInfo.setAvatar(user.avatar);
+    //этот id ушел в cardsList -> instantiateCard через входной userInfo.getUserInfo().id
+    cardsList.renderItems(cards);
   })
-  .catch((err) => {
+    .catch((err) => {
     console.log(err);
-  }); 
+  });
 
 //валидации
 const validationEditInfo = new FormValidator(config, '.popup__form_type_editinfo');
